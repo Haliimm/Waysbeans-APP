@@ -3,7 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { API } from "../config/api";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 export const Register = (props) => {
   // const title = "Home"
@@ -33,12 +33,12 @@ export const Register = (props) => {
       console.log("register success : ", response);
 
       Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Login Success',
+        position: "center",
+        icon: "success",
+        title: "Register Success",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
       setFormRegister({
         name: "",
         email: "",
@@ -46,12 +46,12 @@ export const Register = (props) => {
       });
     } catch (error) {
       Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'Login Failed',
+        position: "center",
+        icon: "error",
+        title: "Register Failed",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
       console.log("register failed : ", error);
     }
 
