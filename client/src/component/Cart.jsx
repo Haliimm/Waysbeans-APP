@@ -139,7 +139,7 @@ function Cart() {
                     <Col key={index} xs={12} className="py-4 px-0 mb-4 animate__animated animate__slideInLeft" style={{ borderTop: "1px solid #613D2B", borderBottom: "1px solid #613D2B" }}>
                       <div className="d-flex justify-content-between align-items-center">
                         <div className="d-flex flex-wrap align-items-center">
-                          <img src={`http://localhost:5000/uploads/${item.product.photo}`} alt={item.name} className="me-3" style={{ width: "7.5rem" }} />
+                          <img src={`${item.product.photo}`} alt={item.name} className="me-3" style={{ width: "7.5rem" }} />
                           <div className="">
                             <h3 className="product-title font-size-18px mb-4"> {item.product.name} </h3>
                             <div className="d-flex align-items-center">

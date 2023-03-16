@@ -128,19 +128,6 @@ func (h *handlerProduct) DeleteProduct(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Status: http.StatusInternalServerError, Message: err.Error()})
 		}
 
-		fileName := product.Photo
-		dirPath := "uploads"
-
-		filePath := fmt.Sprintf("%s/%s", dirPath, fileName)
-
-		err = os.Remove(filePath)
-		if err != nil {
-			fmt.Println("Failed to delete file"+fileName+":", err)
-			return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Status: http.StatusInternalServerError, Message: err.Error()})
-		}
-
-		fmt.Println("File " + fileName + " deleted successfully")
-
 		return c.JSON(http.StatusOK, dto.SuccessResult{Status: http.StatusOK, Message: "Product data deleted successfully", Data: convertResponseProduct(data)})
 	} else {
 		return c.JSON(http.StatusUnauthorized, dto.ErrorResult{Status: http.StatusUnauthorized, Message: "Sorry, you're not Admin"})

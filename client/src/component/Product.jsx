@@ -96,7 +96,7 @@ const Products = (props) => {
       <div className="container d-flex justify-content-center align-items-center mb-5" style={{ marginTop: 92, padding: "0 100px" }}>
         <div className="left-content">
           <div className="img-wrapper" style={{ width: 436, height: 555 }}>
-            <img src={`http://localhost:5000/uploads/${Product.photo}`} alt={Product.name} style={{ width: "100%" }} />
+            <img src={`${Product.photo}`} alt={Product.name} style={{ width: "100%" }} />
           </div>
         </div>
         <div className="ms-5 right-content">
