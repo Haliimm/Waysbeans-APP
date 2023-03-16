@@ -10,10 +10,19 @@ import (
 	"waysbeans/models"
 	"waysbeans/repositories"
 
+	"context"
+
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
+
+var ctx = context.Background()
+var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+var API_KEY = os.Getenv("API_KEY")
+var API_SECRET = os.Getenv("API_SECRET")
 
 type handlerProduct struct {
 	ProductRepository repositories.ProductRepository
@@ -72,11 +81,21 @@ func (h *handlerProduct) CreateProduct(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Status: http.StatusInternalServerError, Message: err.Error()})
 		}
 
+		// Add your Cloudinary credentials ...
+		cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+		// Upload file to Cloudinary ...
+		resp, err := cld.Upload.Upload(ctx, dataFile, uploader.UploadParams{Folder: "Waysbeans"});
+
+		if err != nil {
+		fmt.Println(err.Error())
+		}
+
 		product := models.Product{
 			Name:        request.Name,
 			Description: request.Description,
 			Price:       request.Price,
-			Photo:       request.Photo,
+			Photo:       resp.SecureURL,
 			Stock:       request.Stock,
 		}
 
@@ -161,6 +180,15 @@ func (h *handlerProduct) UpdateProduct(c echo.Context) error {
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
 		}
+		// Add your Cloudinary credentials ...
+		cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+		// Upload file to Cloudinary ...
+		resp, err := cld.Upload.Upload(ctx, dataFile, uploader.UploadParams{Folder: "Waysbeans"});
+
+		if err != nil {
+		fmt.Println(err.Error())
+		}
 
 		if request.Name != "" {
 			product.Name = request.Name
@@ -172,20 +200,7 @@ func (h *handlerProduct) UpdateProduct(c echo.Context) error {
 			product.Price = request.Price
 		}
 		if request.Photo != "" {
-			fileName := product.Photo
-			dirPath := "uploads"
-
-			filePath := fmt.Sprintf("%s/%s", dirPath, fileName)
-
-			err = os.Remove(filePath)
-			if err != nil {
-				fmt.Println("Failed to delete file"+fileName+":", err)
-				return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Status: http.StatusInternalServerError, Message: err.Error()})
-			}
-
-			fmt.Println("File " + fileName + " deleted successfully")
-
-			product.Photo = request.Photo
+			product.Photo = resp.SecureURL
 		}
 		if request.Stock != 0 {
 			product.Stock = request.Stock
