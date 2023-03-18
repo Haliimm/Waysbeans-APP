@@ -47,7 +47,7 @@ function Transaction() {
               </div>
               <div className="d-flex flex-column justify-content-center align-items-center">
                 <img src={LogoBrand} alt="logo-brand" style={{ width: 73, height: 22, margin: "10px 0" }} />
-                <img src={Barcode} alt="qr" style={{ width: 50, height: 50 }} />
+                <img src={Barcode} alt="qr" style={{ width: 50, height: 50, marginBottom: 10 }} />
                 {item.status === "pending" ? (
                   <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#FF9900", backgroundColor: "rgba(255,153,0,0.125)" }}>
                     {item.status}
