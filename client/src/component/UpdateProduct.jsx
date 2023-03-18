@@ -80,7 +80,7 @@ function UpdateProduct() {
 
   async function getDataUpdate() {
     const responseProduct = await API.get('/product/' + id);
-    setImageUrl(`http://localhost:5000/uploads/` + responseProduct.data.data.photo);
+    setImageUrl(responseProduct.data.data.photo);
 
     setForm({
       ...formUpdateProduct,
