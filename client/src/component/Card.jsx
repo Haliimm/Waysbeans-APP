@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { API } from "../config/api";
+import { ConvertFormatRupiah } from "../utils";
 
 const Home = () => {
 
@@ -30,7 +31,7 @@ const Home = () => {
               <Card.Body style={{ color: "#613D2B", fontSize: 14 }}>
                 <Card.Title className="fw-bold" style={{marginTop: 14, marginLeft: 16, color: "#613D2B"}} >{item.name}</Card.Title>
                 <Card.Text>
-                  <p style={{ marginTop: "11px", marginLeft: 16, color: "#613D2B" }}>Price: Rp. {item.price}</p>
+                  <p style={{ marginTop: "11px", marginLeft: 16, color: "#613D2B" }}>Price: {ConvertFormatRupiah(item.price)}</p>
                   <p style={{ marginTop: "-6%", marginLeft: 16, color: "#613D2B" }}>Stock: {item.stock}</p>
                 </Card.Text>
               </Card.Body>
