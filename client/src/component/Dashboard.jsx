@@ -4,9 +4,7 @@ import { API } from "../config/api";
 import { useQuery } from "react-query";
 import { UserContext } from "../context/userContext";
 
-
 function ListProduct() {
-
   const [state, _] = useContext(UserContext);
   let { data: transaction } = useQuery("transactionCache", async () => {
     const response = await API.get("/transactions");
@@ -29,15 +27,17 @@ function ListProduct() {
           </tr>
         </thead>
         <tbody>
-        {transaction?.map((item, index) => (
-          <tr key={item.id}>
-            <td> {index + 1} </td>
-            <td> {item.name} </td>
-            <td> {item.email} </td>
-            <td> {item.phone} </td>
-            <td> {item.address} </td>
-            <td style={{ color:"#00ff21" }}> {item.status} </td>
-          </tr>
+          {transaction?.map((item, index) => (
+            <tr key={item.id}>
+              <td> {index + 1} </td>
+              <td> {item.name} </td>
+              <td> {item.email} </td>
+              <td> {item.phone} </td>
+              <td> {item.address} </td>
+              {item.status === "pending" && <td style={{ color: "#FF9900" }}>{item.status}</td>}
+              {item.status === "success" && <td style={{ color: "#78A85A" }}>{item.status}</td>}
+              {item.status === "failed" && <td style={{ color: "#E83939" }}>{item.status}</td>}
+            </tr>
           ))}
         </tbody>
       </Table>

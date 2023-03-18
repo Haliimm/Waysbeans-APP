@@ -48,23 +48,21 @@ function Transaction() {
               <div className="d-flex flex-column justify-content-center align-items-center">
                 <img src={LogoBrand} alt="logo-brand" style={{ width: 73, height: 22, margin: "10px 0" }} />
                 <img src={Barcode} alt="qr" style={{ width: 50, height: 50 }} />
-                <p className="m-0 px-3 py-1 text-warning" style={{ backgroundColor: "linear-gradient(180deg, #FF9900 0%, #FF9900 100%)" }}>
-                  {item.status === "pending" ? (
-                    <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#FF9900", backgroundColor: "rgba(255,153,0,0.125)" }}>
-                      {item.status}
-                    </div>
-                  ) : null}
-                  {item.status === "success" ? (
-                    <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#78A85A", backgroundColor: "rgba(120,168,90,0.125)" }}>
-                      {item.status}
-                    </div>
-                  ) : null}
-                  {item.status === "failed" ? (
-                    <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#E83939", backgroundColor: "#F5AFAF" }}>
-                      {item.status}
-                    </div>
-                  ) : null}
-                </p>
+                {item.status === "pending" ? (
+                  <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#FF9900", backgroundColor: "rgba(255,153,0,0.125)" }}>
+                    {item.status}
+                  </div>
+                ) : null}
+                {item.status === "success" ? (
+                  <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#78A85A", backgroundColor: "rgba(120,168,90,0.125)" }}>
+                    {item.status}
+                  </div>
+                ) : null}
+                {item.status === "failed" ? (
+                  <div className="font-size-14px text-center rounded py-1" style={{ width: "100%", color: "#E83939", backgroundColor: "#F5AFAF" }}>
+                    {item.status}
+                  </div>
+                ) : null}
               </div>
             </div>
           );
