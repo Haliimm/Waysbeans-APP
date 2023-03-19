@@ -26,8 +26,9 @@ function Transaction() {
               <div className="col-12 img-wrapper d-flex justify-content-center">
                 {item.products?.map((product, index) => (
                   <div className="d-flex flex-column align-items-center">
-                    <img src={`${product.product_photo}`} style={{ width: "60%", margin: 10 }} alt="logo" />
-                    <p style={{ color: "#974A4A", fontSize: 14 }} > Qty: {product.order_quantity} </p>
+                    <img src={`${product.product_photo}`} style={{ width: "6.75rem", height: "9rem", objectFit: "cover", margin: 20 }} alt="logo" />
+                    <p style={{ color: "#974A4A", fontSize: 14 }}> Qty: {product.order_quantity} </p>
+                    <p style={{ color: "#974A4A", fontSize: 14, margin: -15, marginBottom: 10 }}> Price: {ConvertFormatRupiah(product.product_price)} </p>
                   </div>
                 ))}
               </div>
@@ -38,9 +39,6 @@ function Transaction() {
                   </p>
                   <p className="m-0 mt-1" style={{ color: "#974A4A", fontSize: 14 }}>
                     {ConvertFormatDate(item.date)}
-                  </p>
-                  <p className="m-0 mt-3" style={{ color: "#974A4A", fontSize: 14 }}>
-                    {ConvertFormatRupiah(item.total_price)}
                   </p>
                   <p className="m-0" style={{ color: "#974A4A", fontSize: 14 }}>
                     Total Qty: {item.total_quantity}
