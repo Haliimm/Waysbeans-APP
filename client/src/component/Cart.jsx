@@ -42,7 +42,7 @@ function Cart() {
   });
 
   let { data: transaction, refetch: refetchTransaction } = useQuery("transactionsListCache", async () => {
-    const response = await API.get("/transaction");
+    const response = await API.get("/transactions");
     return response.data.data;
   });
   const incrementCart = (id, orderQuantity, product_id) => {

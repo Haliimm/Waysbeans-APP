@@ -19,10 +19,15 @@ import (
 
 type handlerAuth struct {
 	AuthRepository repositories.AuthRepository
+	ProfileRepository repositories.ProfileRepository
 }
 
-func HandlerAuth(AuthRepository repositories.AuthRepository) *handlerAuth {
-	return &handlerAuth{AuthRepository}
+func HandlerAuth(AuthRepository repositories.AuthRepository, ProfileRepository repositories.ProfileRepository) *handlerAuth {
+	return &handlerAuth{
+		AuthRepository		: AuthRepository,
+		ProfileRepository	: ProfileRepository,
+	}
+	
 }
 
 func (h *handlerAuth) Register(c echo.Context) error {
@@ -87,6 +92,21 @@ func (h *handlerAuth) Login(c echo.Context) error {
 	if errGenerateToken != nil {
 		log.Println(errGenerateToken)
 		return echo.NewHTTPError(http.StatusUnauthorized)
+	}
+
+	_, err = h.ProfileRepository.GetProfile(user.ID)
+	if err != nil {
+		profile := models.Profile{
+			ID	: user.ID,
+			Photo: "",
+			Phone: "",
+			Address: "",
+			UserID: user.ID,
+		}
+		_, err = h.ProfileRepository.CreateProfile(profile)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
+		}
 	}
 
 	loginResponse := authdto.LoginResponse{

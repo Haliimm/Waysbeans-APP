@@ -5,7 +5,7 @@ import { Button, Nav, Navbar, Container, NavDropdown, Badge } from "react-bootst
 import ModalLogin from "./ModalLogin";
 import ModalRegister from "./ModalRegister";
 import Cart from "../assets/image/Cart.png";
-import Profil from "../assets/image/Profil.png";
+import Profile from "../assets/image/blank-profile.png";
 import User from "../assets/image/User.png";
 import Logout from "../assets/image/Logout.png";
 import IconAddProduct from "../assets/image/IconAddProduct.png";
@@ -15,7 +15,7 @@ import { API, setAuthToken } from "../config/api";
 import { useQuery } from "react-query";
 import Swal from "sweetalert2";
 
-function Header() {
+function Header(props) {
   let navigate = useNavigate();
   const [state, dispatch] = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +23,11 @@ function Header() {
   const [showRegister, setShowRegister] = useState(false);
   // const [totalQty, setTotalQty] = useState(0);
   const [UserCarts, SetUserCarts] = useState([]);
+
+  let { data: profile } = useQuery('profileCache', async () => {
+    const response = await API.get('/profile');
+    return response.data.data;
+  });
 
   useEffect(() => {
     // Redirect Auth but just when isLoading is false
@@ -139,7 +144,7 @@ function Header() {
             {state.isLogin === true ? (
               state.user.is_admin === true ? (
                 <Nav className="ms-auto gap-3">
-                  <NavDropdown title={<img src={Profil} alt="" style={{ content: "none" }} />}>
+                  <NavDropdown id="dropdown" title={<img src={Profile} alt="" className="rounded-circle" style={{ cursor:"pointer", objectFit:"cover", width: "10px", height: "10px" }} />}>
                     <NavDropdown.Item href="/add-product">
                       <img src={IconAddProduct} alt="" style={{ width: 40, height: 38.17 }} />
                       <span className="ms-2 fw-bold">Add Product</span>
@@ -169,7 +174,7 @@ function Header() {
                     ) : null}
                   </NavLink>
 
-                  <NavDropdown title={<img src={Profil} alt="" />}>
+                  <NavDropdown id="dropdown" title={<img src={profile?.image ? props.UpdateProfile.photo : Profile} alt="" className="rounded-circle" style={{ cursor:"pointer", width: "60px", height: "60px" }} />}>
                     <NavDropdown.Item href="/my-transaction">
                       <img src={User} alt="" style={{ width: 40, height: 38.17 }} />
                       <span className="ms-2 fw-bold">Profil</span>

@@ -156,3 +156,7 @@ textarea {
   }
 }
 
+#dropdown::after {
+  content: none;
+}
+

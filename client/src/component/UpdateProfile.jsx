@@ -4,52 +4,48 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Tmb from "../assets/image/Thumbnail.png";
+import Profile from "../assets/image/blank-profile.png";
 import { Button, Form } from "react-bootstrap";
 
 import { API } from "../config/api";
 import { useMutation } from "react-query";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
-function UpdateProduct() {
+function UpdateProfile(props) {
   let navigate = useNavigate();
   const { id } = useParams();
 
-  const [imageUrl, setImageUrl] = useState("");
-  const [formUpdateProduct, setForm] = useState({
-    photo: '',
-    name: '',
-    description: '',
-    price: '',
-    stock: '',
-  }); //Store product data
+  const [imageUrl, setImageUrl] = useState(Profile);
+  const [formUpdateProfile, setFormProfile] = useState({
+    photo: "",
+    phone: "",
+    address: "",
+  }); //Store profile data
 
-  async function getDataUpdate() {
-    const responseProduct = await API.get('/product/' + id);
-    setImageUrl(responseProduct.data.data.photo);
+  async function getDataUpdateProfile() {
+    const responseProfile = await API.get("/profile/" + id);
+    setImageUrl(responseProfile.data.data.photo);
 
-    setForm({
-      ...formUpdateProduct,
-      name: responseProduct.data.data.name,
-      description: responseProduct.data.data.description,
-      price: responseProduct.data.data.price,
-      stock: responseProduct.data.data.stock,
+    setFormProfile({
+      ...formUpdateProfile,
+      phone: responseProfile.data.data.phone,
+      address: responseProfile.data.data.address,
     });
   }
 
   useEffect(() => {
-    getDataUpdate()
+    getDataUpdateProfile();
   }, []);
 
-   // Handle change data on form
-   const handleChange = (e) => {
-    setForm({
-      ...formUpdateProduct,
-      [e.target.name]:
-        e.target.type === 'file' ? e.target.files : e.target.value,
+  // Handle change data on form
+  const handleChange = (e) => {
+    setFormProfile({
+      ...formUpdateProfile,
+      [e.target.name]: e.target.type === "file" ? e.target.files : e.target.value,
     });
 
     // Create image url for preview
-    if (e.target.type === 'file') {
+    if (e.target.type === "file") {
       let url = URL.createObjectURL(e.target.files[0]);
       setImageUrl(url);
     }
@@ -62,36 +58,31 @@ function UpdateProduct() {
       // Configuration
       const config = {
         headers: {
-          'Content-type': 'multipart/form-data',
+          "Content-type": "multipart/form-data",
         },
       };
 
       // Store data with FormData as object
       const formData = new FormData();
-      if (formUpdateProduct.photo) {
-        formData.set('photo', formUpdateProduct?.photo[0], formUpdateProduct?.photo[0]?.name);
+      if (formUpdateProfile.photo) {
+        formData.set("photo", formUpdateProfile?.photo[0], formUpdateProfile?.photo[0]?.name);
       }
-      formData.set('name', formUpdateProduct.name);
-      formData.set('description', formUpdateProduct.description);
-      formData.set('price', formUpdateProduct.price);
-      formData.set('stock', formUpdateProduct.stock);
+      formData.set("phone", formUpdateProfile.phone);
+      formData.set("address", formUpdateProfile.address);
 
       // await disini berfungsi untuk menunggu sampai promise tersebut selesai dan mengembalikkan hasilnya
-      const response = await API.patch(
-        '/product/' + id,
-        formData,
-        config
-      );
+      const response = await API.patch("/profile/" + id, formData, config);
       console.log(response.data);
+      props.setUpdateProfile(response)
 
-      navigate('/list-product');
+      navigate("/my-transaction");
       Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Update Product Success',
+        position: "center",
+        icon: "success",
+        title: "Update Product Success",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -102,53 +93,19 @@ function UpdateProduct() {
       <div className="container d-flex justify-content-around align-items-center my-5" style={{ marginTop: 46 }}>
         <div style={{ width: 472 }}>
           <p className="fw-bold fs-3" style={{ color: "#613D2B", marginBottom: 31 }}>
-            Add Product
+            Update Profile
           </p>
 
           <form onSubmit={(e) => handleSubmit.mutate(e)}>
             <div class="mb-3">
               <input
-                type="text"
-                className="form-control p-2"
-                name="name"
-                placeholder="Name"
-                value={formUpdateProduct.name}
-                onChange={handleChange}
-                id="name"
-                style={{
-                  textColor: "#613D2B",
-                  backgroundColor: "rgba(97, 61, 43, 0.25)",
-                  border: "2px solid #613D2B",
-                }}
-              />
-            </div>
-
-            <div class="mb-3">
-              <input
                 type="number"
                 className="form-control p-2"
-                name="stock"
-                placeholder="Stock"
-                value={formUpdateProduct.stock}
+                name="phone"
+                placeholder="Phone"
+                value={formUpdateProfile.phone}
                 onChange={handleChange}
-                id="stok"
-                style={{
-                  textColor: "#613D2B",
-                  backgroundColor: "rgba(97, 61, 43, 0.25)",
-                  border: "2px solid #613D2B",
-                }}
-              />
-            </div>
-
-            <div class="mb-3">
-              <input
-                type="number"
-                className="form-control p-2"
-                name="price"
-                placeholder="Price"
-                value={formUpdateProduct.price}
-                onChange={handleChange}
-                id="price"
+                id="phone"
                 style={{
                   textColor: "#613D2B",
                   backgroundColor: "rgba(97, 61, 43, 0.25)",
@@ -160,11 +117,11 @@ function UpdateProduct() {
             <div class="mb-3">
               <textarea
                 className="form-control p-2"
-                name="description"
-                placeholder="Description Product"
-                value={formUpdateProduct.description}
+                name="address"
+                placeholder="Address"
+                value={formUpdateProfile.address}
                 onChange={handleChange}
-                id="description"
+                id="address"
                 style={{ height: 150, resize: "none", textColor: "#613D2B", backgroundColor: "rgba(97, 61, 43, 0.25)", border: "2px solid #613D2B" }}
               ></textarea>
             </div>
@@ -183,12 +140,12 @@ function UpdateProduct() {
             >
               <Form.Label className="d-flex">
                 <div className="d-flex justify-content-between align-text-center">
-                  <Form.Control name="photo" onChange={handleChange} type="file" hidden placeholder="Photo Product" cursor="pointer"/>
+                  <Form.Control name="photo" onChange={handleChange} type="file" hidden placeholder="Photo Product" cursor="pointer" />
                   <p className="m-0 mt-2 ms-2" style={{ color: "grey" }}>
-                    Photo Product
+                    Photo Profile
                   </p>
                 </div>
-                <div className="d-flex ms-4 mt-2">
+                <div className="d-flex ms-5 mt-2">
                   <img src={Tmb} alt="" />
                 </div>
               </Form.Label>
@@ -209,17 +166,17 @@ function UpdateProduct() {
                   marginTop: 66,
                 }}
               >
-                Update Product
+                Update Profile
               </Button>
             </div>
           </form>
         </div>
         <div style={{ width: 436, height: 555 }}>
-          <img src={imageUrl} style={{ width: "100%" }} alt="imageadmin" />
+          <img src={imageUrl} style={{ width: "100%" }} alt="" />
         </div>
       </div>
     </div>
   );
 }
 
-export default UpdateProduct;
+export default UpdateProfile;
