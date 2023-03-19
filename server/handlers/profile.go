@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
@@ -100,23 +102,20 @@ func (h *handlerProfile) UpdateProfile(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
 	}
 
+	// Add your Cloudinary credentials ...
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// Upload file to Cloudinary ...
+	resp, err := cld.Upload.Upload(ctx, dataFile, uploader.UploadParams{Folder: "Waysbeans"});
+
+	if err != nil {
+		fmt.Println(err.Error())
+		}
+
 	user.ID = request.ID
 
 	if request.Photo != "" {
-		fileName := user.Photo
-		dirPath := "uploads"
-
-		filePath := fmt.Sprintf("%s/%s", dirPath, fileName)
-
-		err = os.Remove(filePath)
-		if err != nil {
-			fmt.Println("Failed to delete file"+fileName+":", err)
-			return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Status: http.StatusInternalServerError, Message: err.Error()})
-		}
-
-		fmt.Println("File " + fileName + " deleted successfully")
-
-		user.Photo = request.Photo
+		user.Photo = resp.SecureURL
 	}
 	if request.Phone != "" {
 		user.Phone = request.Phone
