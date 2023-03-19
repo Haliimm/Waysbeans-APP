@@ -25,7 +25,10 @@ function UpdateProfile(props) {
 
   async function getDataUpdateProfile() {
     const responseProfile = await API.get("/profile");
-    setImageUrl(responseProfile.data.data.photo);
+    if (responseProfile.data.data.photo !== "") {
+      setImageUrl(responseProfile.data.data.photo);
+
+    }
 
     setFormProfile({
       ...formUpdateProfile,
