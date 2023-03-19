@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 import { ConvertFormatRupiah } from "../utils";
 import { UserContext } from "../context/userContext";
 import Swal from "sweetalert2";
-import ModalShipping from '../component/ModalShipping';
+import ModalShipping from "../component/ModalShipping";
 import ModalSuccessShipping from "../component/ModalSuccessShipping";
 
 function Cart() {
@@ -25,14 +25,13 @@ function Cart() {
   };
 
   const popSuccess = () => {
-    setShowsuccess(true)
-    setShowShipping(false)
-}
+    setShowsuccess(true);
+    setShowShipping(false);
+  };
 
   const [message, setMessage] = useState(null);
   const [cart, setCart] = useState(false);
   const [state, dispatch] = useContext(UserContext);
-
 
   // untuk mendeklarasikan menjanjikan suatu kode
   let { data: carts, refetch: refetchCarts } = useQuery("cartsListCache", async () => {
@@ -51,12 +50,14 @@ function Cart() {
   };
 
   const decrementCart = async (id, orderQuantity, product_id) => {
-    const response = await API.patch(`/decrease/${id}`);
-    setCart({
-      id: id,
-      product_id: product_id,
-      order_quantity: orderQuantity - 1,
-    });
+    if (orderQuantity > 1) {
+      const response = await API.patch(`/decrease/${id}`);
+      setCart({
+        id: id,
+        product_id: product_id,
+        order_quantity: orderQuantity - 1,
+      });
+    }
   };
 
   const updateCart = useMutation(async (id) => {
@@ -79,7 +80,6 @@ function Cart() {
       setMessage(null);
       refetchCarts();
       setMessageCarts();
-
     } catch (error) {
       console.log(error.response.data.message);
       const newAlert = (

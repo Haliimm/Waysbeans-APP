@@ -1,51 +1,27 @@
 // import DataProduct from "../assets/data/data.json";
 // import { useState } from "react";
+import { UserContext } from "../context/userContext";
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import { useMutation, useQuery } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../config/api";
 import Swal from "sweetalert2";
 
-// import ModalLogin from "./ModalLogin";
-// import ModalRegister from "./ModalRegister";
-
-
-const Products = (props) => {
-  // const params = useParams();
-  // const id = parseInt(params.id);
-
-  // const getProduct = JSON.parse(localStorage.getItem("dataProduct"));
-  // const findProduct = getProduct.find((product) => product.id === id);
-
-  // const handleCart = () => {
-  //   const dataCart = JSON.parse(localStorage.getItem("dataCart")) || [];
-  //   const newProduct = {
-  //     id: findProduct.id,
-  //     name: findProduct.name,
-
-  //     price: findProduct.price,
-  //     photo: findProduct.photo,
-  //     qty: 1,
-  //   };
-
-  //   const indexCart = dataCart.findIndex((item) => item.id === id);
-  //   if (indexCart === -1) {
-  //     dataCart.push(newProduct);
-  //   } else {
-  //     dataCart[indexCart].qty = dataCart[indexCart].qty+1
-  //   }
-  //   localStorage.setItem("dataCart", JSON.stringify(dataCart));
-  //   window.dispatchEvent(new Event("storage"));
-  // };
-
-  // const [showLogin, setModalLogin] = useState(false);
-  // const [showRegister, setModalRegister] = useState(false);
-
+const Products = () => {
   const navigate = useNavigate();
+
+  const [state] = useContext(UserContext);
 
   // Fetching product data from database
   let { data: products } = useQuery("productsCache", async () => {
     const response = await API.get("/products");
+    return response.data.data;
+  });
+
+  let { data: carts, refetch: refetchCarts } = useQuery("cartsListCache", async () => {
+    const response = await API.get("/carts");
+    console.log(response.data.data);
     return response.data.data;
   });
 
@@ -56,38 +32,48 @@ const Products = (props) => {
   const addCart = useMutation(async () => {
     try {
       // e.preventDefault();
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
 
-        const data = {
-          order_quantity: +1,
-        };
+      const data = {
+        order_quantity: +1,
+      };
 
-        const body = JSON.stringify(data);
+      const body = JSON.stringify(data);
 
-        console.log(body);
-        const response = await API.post(`/cart/${Product.id}`, body, config);
-        console.log("transaction success :", response);
+      console.log(body);
+      const response = await API.post(`/cart/${Product.id}`, body, config);
+      console.log("transaction success :", response);
 
-        navigate("/my-cart");
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Add Success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-    } catch {
+      navigate("/my-cart");
       Swal.fire({
         position: "center",
-        icon: "failed",
-        title: "Failed",
+        icon: "success",
+        title: "Add Success",
         showConfirmButton: false,
         timer: 1500,
       });
+    } catch {
+      const cart = carts.find((cart) => cart.product_id === Product.id && cart.user_id === state.user.id);
+      const response = await API.patch(`/increase/${cart.id}`);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Add Success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/my-cart");
+      // Swal.fire({
+      //   position: "center",
+      //   icon: "failed",
+      //   title: "Failed",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
     }
   });
 
@@ -102,11 +88,11 @@ const Products = (props) => {
         <div className="ms-5 right-content">
           <div className="right-wrapper">
             <h1 className="fw-bold" style={{ color: "#613D2B", marginTop: 0 }}>
-            {Product.name}
+              {Product.name}
             </h1>
             <p style={{ color: "#974A4A", fontSize: 18 }}>Stock: {Product.stock}</p>
             <p className="mt-5" style={{ textAlign: "justify", fontSize: 18 }}>
-            {Product.description}
+              {Product.description}
             </p>
             <p className="my-4 text-end" style={{ color: "#974A4A", fontWeight: 900, fontSize: 24 }}>
               Rp. {Product.price}
@@ -119,6 +105,6 @@ const Products = (props) => {
       </div>
     </>
   );
-}
+};
 
 export default Products;

@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useMutation } from "react-query";
 // import { useNavigate } from "react-router";
 import { API } from "../config/api";
+import { useQuery } from 'react-query';
+import { UserContext } from '../context/userContext';
 
 
 const style = {
@@ -17,12 +19,18 @@ const style = {
 
 
 export default function Shipping(props) {
+    const [state] = useContext(UserContext);
+
+    let { data: profile } = useQuery('profileCache', async () => {
+        const response = await API.get(`/profile`);
+        return response.data.data;
+      });
    
     const [form, setForm] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        address: ''
+        name: state.user.name,
+        email: state.user.email,
+        phone: profile.phone,
+        address: profile.address
     })
 
     const handleChange = (e) => {
@@ -109,6 +117,7 @@ export default function Shipping(props) {
                         onChange={handleChange}
                         name="name"
                         type="text"
+                        value={form.name}
                         style={style.textInput}
                         placeholder="Name"
                         className="mb-3 w-100 fs-5"
@@ -117,6 +126,7 @@ export default function Shipping(props) {
                         onChange={handleChange}
                         name="email"
                         type="email"
+                        value={form.email}
                         style={style.textInput}
                         placeholder="Email"
                         className="mb-3 w-100 fs-5"
@@ -125,6 +135,7 @@ export default function Shipping(props) {
                         onChange={handleChange}
                         name="phone"
                         type="text"
+                        value={form.phone}
                         style={style.textInput}
                         placeholder="Phone"
                         className="mb-3 w-100 fs-5"
@@ -132,6 +143,7 @@ export default function Shipping(props) {
                     <Form.Control
                         onChange={handleChange}
                         name="address"
+                        value={form.address}
                         type="text"
                         style={style.textInput}
                         placeholder="Address"

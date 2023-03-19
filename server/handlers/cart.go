@@ -81,16 +81,6 @@ func (h *handlerCart) CreateCart(c echo.Context) error {
 	userId := userLogin.(jwt.MapClaims)["id"].(float64)
 	productId, _ := strconv.Atoi(c.Param("product_id"))
 
-	product, err := h.ProductRepository.GetProduct(productId)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
-	}
-	product.Stock = product.Stock - request.OrderQuantity
-	_, err = h.ProductRepository.UpdateProduct(product)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
-	}
-
 	cart := models.Cart{
 		ProductID:     productId,
 		OrderQuantity: request.OrderQuantity,
