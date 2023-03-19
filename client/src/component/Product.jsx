@@ -74,6 +74,7 @@ const Products = () => {
         showConfirmButton: false,
         timer: 1500,
       });
+      window.location.reload();
       // Swal.fire({
       //   position: "center",
       //   icon: "failed",
