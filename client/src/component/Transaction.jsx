@@ -14,7 +14,7 @@ function Transaction() {
     return response.data.data;
   });
   return (
-    <div className="card-wrapper">
+    <div className="card-wrapper ms-5">
       <h3 className="fw-bold" style={{ color: "#613D2B", marginBottom: 26 }}>
         My Transaction
       </h3>
@@ -22,11 +22,13 @@ function Transaction() {
         ?.filter((transaction) => transaction.user.id === state.user.id)
         ?.map((item, index) => {
           return (
-            <div key={index} className="d-flex align-items-center justify-content-between mb-2 p-4" style={{ backgroundColor: "#F6E6DA", width: 524, height: 145 }}>
-              <div className="d-flex align-items-center ">
-                <div className="img-wrapper" style={{ width: 80, weight: 120 }}>
-                  {item.products?.map((product, index) => (index % 2 === 0 ? <img src={`${product.product_photo}`} style={{ width: "100%" }} alt="logo" /> : null))}
-                </div>
+            <div key={index} className="row align-items-center justify-content-between mb-2 p-4" style={{ backgroundColor: "#F6E6DA" }} >
+              <div className="col-12 img-wrapper d-flex justify-content-center">
+                {item.products?.map((product, index) => (
+                  <img src={`${product.product_photo}`} style={{ width: "20%", margin: 10 }} alt="logo" />
+                ))}
+              </div>
+              <div className="col-5 d-flex align-items-center">
                 <div className="ms-4">
                   <p className="m-0" style={{ color: "#613D2B", fontWeight: 900 }}>
                     {item.products.product_name}
@@ -45,7 +47,7 @@ function Transaction() {
                   </p>
                 </div>
               </div>
-              <div className="d-flex flex-column justify-content-center align-items-center">
+              <div className="col-5 d-flex flex-column justify-content-center align-items-center">
                 <img src={LogoBrand} alt="logo-brand" style={{ width: 73, height: 22, margin: "10px 0" }} />
                 <img src={Barcode} alt="qr" style={{ width: 50, height: 50, marginBottom: 10 }} />
                 {item.status === "pending" ? (
