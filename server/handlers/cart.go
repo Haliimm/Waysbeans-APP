@@ -169,6 +169,34 @@ func (h *handlerCart) DeleteCart(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{Status: http.StatusOK, Message: "Cart data updated successfully", Data: convertResponseCart(data)})
 }
 
+func (h *handlerCart) IncreaseQuantity(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	cart, err := h.CartRepository.GetCart(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
+	}
+	cart.OrderQuantity += 1
+	UpdateCart, err := h.CartRepository.UpdateCart(cart)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{Status: http.StatusOK, Message: "Cart data updated successfully", Data: convertResponseCart(UpdateCart)})
+} 
+
+func (h *handlerCart) DecreaseQuantity(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	cart, err := h.CartRepository.GetCart(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
+	}
+	cart.OrderQuantity -= 1
+	UpdateCart, err := h.CartRepository.UpdateCart(cart)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
+	}
+	return c.JSON(http.StatusOK, dto.SuccessResult{Status: http.StatusOK, Message: "Cart data updated successfully", Data: convertResponseCart(UpdateCart)})
+} 
+
 func convertResponseCart(u models.Cart) cartsdto.CartResponse {
 	return cartsdto.CartResponse{
 		ProductID:     u.ProductID,

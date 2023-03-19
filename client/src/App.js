@@ -13,21 +13,20 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import Header from "./component/Header";
 
 function App() {
-  const [UpdateProfile, setUpdateProfile] = useState({});
 
   return (
     <div className="App">
-      <Header UpdateProfile={UpdateProfile} />
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/detail-product/:id" element={<DetailProduct />} />
         <Route path="/my-cart" element={<MyCart />} />
-        <Route path="/my-transaction" element={<MyTransaction UpdateProfile={UpdateProfile} />} />
+        <Route path="/my-transaction" element={<MyTransaction />} />
         <Route path="/add-product" element={<AddCard />} />
         <Route path="/update-product/:id" element={<UpdateCard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/list-product" element={<ListProductAdmin />} />
-        <Route path="/update-profile" element={<UpdateProfilePage setUpdateProfile={setUpdateProfile} />} />
+        <Route path="/update-profile" element={<UpdateProfilePage />} />
       </Routes>
     </div>
   );

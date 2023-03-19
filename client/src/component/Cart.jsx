@@ -41,11 +41,8 @@ function Cart() {
     return response.data.data;
   });
 
-  let { data: transaction, refetch: refetchTransaction } = useQuery("transactionsListCache", async () => {
-    const response = await API.get("/transactions");
-    return response.data.data;
-  });
-  const incrementCart = (id, orderQuantity, product_id) => {
+  const incrementCart = async (id, orderQuantity, product_id) => {
+    const response = await API.patch(`/increase/${id}`);
     setCart({
       id: id,
       product_id: product_id,
@@ -53,7 +50,8 @@ function Cart() {
     });
   };
 
-  const decrementCart = (id, orderQuantity, product_id) => {
+  const decrementCart = async (id, orderQuantity, product_id) => {
+    const response = await API.patch(`/decrease/${id}`);
     setCart({
       id: id,
       product_id: product_id,
@@ -81,7 +79,7 @@ function Cart() {
       setMessage(null);
       refetchCarts();
       setMessageCarts();
-      refetchTransaction();
+
     } catch (error) {
       console.log(error.response.data.message);
       const newAlert = (

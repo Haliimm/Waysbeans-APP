@@ -74,8 +74,6 @@ function UpdateProfile(props) {
       // await disini berfungsi untuk menunggu sampai promise tersebut selesai dan mengembalikkan hasilnya
       const response = await API.patch("/profile", formData, config);
       console.log(response.data);
-      props.setUpdateProfile(response);
-
       Swal.fire({
         position: "center",
         icon: "success",

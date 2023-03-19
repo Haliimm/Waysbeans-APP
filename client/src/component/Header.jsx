@@ -94,29 +94,6 @@ function Header(props) {
     }
   });
 
-  // const fetchCart = () => {
-  //   const dataCart = JSON.parse(localStorage.getItem("dataCart")) || [];
-  //   let total = 0;
-
-  //   dataCart.map((item) => {
-  //     total = total + item.qty;
-  //   });
-  //   setTotalQty(total);
-  // };
-
-  // const [loginUsers, setLoginUsers] = useState({});
-  // console.log(loginUsers);
-
-  // useEffect(() => {
-  //   fetchCart();
-  //   const LoginUsers = JSON.parse(localStorage.getItem("loginUser")) || {};
-  //   setLoginUsers(LoginUsers);
-
-  //   window.addEventListener("storage", () => {
-  //     fetchCart();
-  //   });
-  // }, []);
-
   const logout = () => {
     console.log(state);
     dispatch({
@@ -167,14 +144,14 @@ function Header(props) {
                     <div className="me-3">
                       <img src={Cart} alt="" />
                     </div>
-                    {UserCarts.filter((cart) => cart.user_id === User.id).length > 0 ? (
+                    {UserCarts.filter((cart) => cart.user_id === state.user.id).length > 0 ? (
                       <Badge pill bg="danger" style={{ position: "absolute", top: 20, right: 5 }}>
-                        {UserCarts.filter((cart) => cart.user_id === User.id).length}
+                        {UserCarts.filter((cart) => cart.user_id === state.user.id).length}
                       </Badge>
                     ) : null}
                   </NavLink>
 
-                  <NavDropdown id="dropdown" title={<img src={profile?.image ? props.UpdateProfile.photo : Profile} alt="" className="rounded-circle" style={{ cursor:"pointer", width: "60px", height: "60px" }} />}>
+                  <NavDropdown id="dropdown" title={<img src={profile?.photo ? profile.photo : Profile} alt="" className="rounded-circle" style={{ cursor:"pointer", width: "60px", height: "60px" }} />}>
                     <NavDropdown.Item href="/my-transaction">
                       <img src={User} alt="" style={{ width: 40, height: 38.17 }} />
                       <span className="ms-2 fw-bold">Profil</span>
