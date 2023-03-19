@@ -9,7 +9,6 @@ import (
 	"waysbeans/repositories"
 
 	"net/http"
-	"strconv"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
@@ -27,10 +26,11 @@ func HandlerProfile(ProfileRepository repositories.ProfileRepository) *handlerPr
 }
 
 func (h *handlerProfile) GetProfile(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+	userLogin := c.Get("userLogin")
+	userId := userLogin.(jwt.MapClaims)["id"].(float64)
 
 	var profile models.Profile
-	profile, err := h.ProfileRepository.GetProfile(id)
+	profile, err := h.ProfileRepository.GetProfile(int (userId))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Status: http.StatusBadRequest, Message: err.Error()})
 	}

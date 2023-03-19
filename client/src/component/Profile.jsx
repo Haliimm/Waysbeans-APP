@@ -11,7 +11,7 @@ function Profile(props) {
     const [state] = useContext(UserContext);
 
     let { data: profile } = useQuery('profileCache', async () => {
-        const response = await API.get('/profile/' + state.user.id);
+        const response = await API.get(`/profile`);
         return response.data.data;
       });
       console.log(profile)

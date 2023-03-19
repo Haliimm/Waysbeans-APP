@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,12 +9,13 @@ import { Button, Form } from "react-bootstrap";
 
 import { API } from "../config/api";
 import { useMutation } from "react-query";
+import { UserContext } from "../context/userContext";
 import Swal from "sweetalert2";
 
 function UpdateProfile(props) {
   let navigate = useNavigate();
-  const { id } = useParams();
 
+  const [state] = useContext(UserContext);
   const [imageUrl, setImageUrl] = useState(Profile);
   const [formUpdateProfile, setFormProfile] = useState({
     photo: "",
@@ -23,7 +24,7 @@ function UpdateProfile(props) {
   }); //Store profile data
 
   async function getDataUpdateProfile() {
-    const responseProfile = await API.get("/profile/" + id);
+    const responseProfile = await API.get("/profile");
     setImageUrl(responseProfile.data.data.photo);
 
     setFormProfile({
@@ -73,7 +74,7 @@ function UpdateProfile(props) {
       // await disini berfungsi untuk menunggu sampai promise tersebut selesai dan mengembalikkan hasilnya
       const response = await API.patch("/profile", formData, config);
       console.log(response.data);
-      props.setUpdateProfile(response)
+      props.setUpdateProfile(response);
 
       Swal.fire({
         position: "center",
