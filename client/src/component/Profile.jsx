@@ -15,17 +15,13 @@ function Profile(props) {
         return response.data.data;
       });
 
-    const handleUpdateProfile = (id) => {
-       navigate(`/update-profile/${id}`);
-     };
-
   return (
     <div>
         <h3 className="fw-bold" style={{color: "#613D2B", marginBottom: 26}}>My Profile</h3>
         <div className="d-flex">
             <div className="img-wrapper"  style={{width: 180, height: 221}}>
                 <img src={profile?.image ? props.UpdateProfile.photo : ImgProfile} style={{width: "100%"}} alt="profile" />
-                <button onClick={() => handleUpdateProfile()} className="mt-3 text-white rounded-3 fw-bold border-0 py-2 w-100" style={{ backgroundColor: "#613D2B" }} > Edit Profile </button>
+                <button onClick={() => navigate("/update-profile")} className="mt-3 text-white rounded-3 fw-bold border-0 py-2 w-100" style={{ backgroundColor: "#613D2B" }} > Edit Profile </button>
             </div>
             <div style={{marginLeft: 28}}>
                 <div className="name">

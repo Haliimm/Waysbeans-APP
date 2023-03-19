@@ -75,7 +75,6 @@ function UpdateProfile(props) {
       console.log(response.data);
       props.setUpdateProfile(response)
 
-      navigate("/my-transaction");
       Swal.fire({
         position: "center",
         icon: "success",
@@ -83,6 +82,7 @@ function UpdateProfile(props) {
         showConfirmButton: false,
         timer: 1500,
       });
+      navigate("/my-transaction");
     } catch (error) {
       console.log(error);
     }
