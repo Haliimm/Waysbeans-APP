@@ -22,10 +22,13 @@ function Transaction() {
         ?.filter((transaction) => transaction.user.id === state.user.id)
         ?.map((item, index) => {
           return (
-            <div key={index} className="row align-items-center justify-content-between mb-2 p-4" style={{ backgroundColor: "#F6E6DA" }} >
+            <div key={index} className="row align-items-center justify-content-between mb-2 p-4" style={{ backgroundColor: "#F6E6DA" }}>
               <div className="col-12 img-wrapper d-flex justify-content-center">
                 {item.products?.map((product, index) => (
-                  <img src={`${product.product_photo}`} style={{ width: "20%", margin: 10 }} alt="logo" />
+                  <div className="d-flex flex-column align-items-center">
+                    <img src={`${product.product_photo}`} style={{ width: "60%", margin: 10 }} alt="logo" />
+                    <p style={{ color: "#974A4A", fontSize: 14 }} > Qty: {product.order_quantity} </p>
+                  </div>
                 ))}
               </div>
               <div className="col-5 d-flex align-items-center">
@@ -40,7 +43,7 @@ function Transaction() {
                     {ConvertFormatRupiah(item.total_price)}
                   </p>
                   <p className="m-0" style={{ color: "#974A4A", fontSize: 14 }}>
-                    Qty: {item.total_quantity}
+                    Total Qty: {item.total_quantity}
                   </p>
                   <p className="m-0 fw-bold" style={{ color: "#974A4A" }}>
                     {ConvertFormatRupiah(item.total_price)}
