@@ -32,9 +32,10 @@ const Products = () => {
   const addCart = useMutation(async () => {
     try {
       // e.preventDefault();
-      if (carts.filter((cart) => cart.user.id === state.user.id).some((cart) => cart.product_id === Product.id)) {
-        const cart = carts.find((cart) => cart.product_id === Product.id && cart.user_id === state.user.id);
+      const cart = carts.find((cart) => cart.product_id === Product.id && cart.user_id === state.user.id);
         const response = await API.patch(`/increase/${cart.id}`);
+        
+
         Swal.fire({
           position: "center",
           icon: "success",
@@ -43,40 +44,43 @@ const Products = () => {
           timer: 1500,
         });
         navigate("/my-cart");
-      } else {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
-
-        const data = {
-          order_quantity: +1,
-        };
-
-        const body = JSON.stringify(data);
-
-        console.log(body);
-        const response = await API.post(`/cart/${Product.id}`, body, config);
-        console.log("transaction success :", response);
-
-        navigate("/my-cart");
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Add Success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
+      // if (carts.filter((cart) => cart.user_id === state.user.id).some((c) => c.product_id === Product.id) === true) {
+        
+      // } else {
+        
+      // }
     } catch {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const data = {
+        order_quantity: +1,
+      };
+
+      const body = JSON.stringify(data);
+
+      console.log(body);
+      const response = await API.post(`/cart/${Product.id}`, body, config);
+      console.log("transaction success :", response);
+      
+      navigate("/my-cart");
       Swal.fire({
         position: "center",
-        icon: "failed",
-        title: "Failed",
+        icon: "success",
+        title: "Add Success",
         showConfirmButton: false,
         timer: 1500,
       });
+      // Swal.fire({
+      //   position: "center",
+      //   icon: "failed",
+      //   title: "Failed",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
     }
   });
 
