@@ -11,16 +11,17 @@ function Profile(props) {
     const [state] = useContext(UserContext);
 
     let { data: profile } = useQuery('profileCache', async () => {
-        const response = await API.get('/profile');
+        const response = await API.get('/profile/' + state.user.id);
         return response.data.data;
       });
+      console.log(profile)
 
   return (
     <div>
         <h3 className="fw-bold" style={{color: "#613D2B", marginBottom: 26}}>My Profile</h3>
         <div className="d-flex">
             <div className="img-wrapper"  style={{width: 180, height: 221}}>
-                <img src={profile?.image ? props.UpdateProfile.photo : ImgProfile} style={{width: "100%"}} alt="profile" />
+                <img src={profile?.photo ? profile.photo : ImgProfile} style={{width: "100%"}} alt="profile" />
                 <button onClick={() => navigate("/update-profile")} className="mt-3 text-white rounded-3 fw-bold border-0 py-2 w-100" style={{ backgroundColor: "#613D2B" }} > Edit Profile </button>
             </div>
             <div style={{marginLeft: 28}}>

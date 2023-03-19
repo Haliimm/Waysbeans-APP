@@ -27,7 +27,7 @@ function App() {
         <Route path="/update-product/:id" element={<UpdateCard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/list-product" element={<ListProductAdmin />} />
-        <Route path="/update-profile/:id" element={<UpdateProfilePage setUpdateProfile={setUpdateProfile} />} />
+        <Route path="/update-profile" element={<UpdateProfilePage setUpdateProfile={setUpdateProfile} />} />
       </Routes>
     </div>
   );
