@@ -12,6 +12,12 @@ function ListProduct() {
     return response.data.data;
   });
 
+  let asceding = []
+  if (transaction !== undefined) {
+    asceding = [...transaction]
+    asceding.sort((a,b) => b.id - a.id)
+  }
+
   return (
     <Container>
       <h1 className="custom-margin-top product-title font-size-36px mb-5">Income Transaction</h1>
@@ -27,7 +33,7 @@ function ListProduct() {
           </tr>
         </thead>
         <tbody>
-          {transaction?.map((item, index) => (
+          {asceding?.map((item, index) => (
             <tr key={item.id}>
               <td> {index + 1} </td>
               <td> {item.name} </td>

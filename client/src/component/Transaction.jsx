@@ -13,12 +13,19 @@ function Transaction() {
     console.log(response.data.data);
     return response.data.data;
   });
+
+  let asceding = []
+  if (transaction !== undefined) {
+    asceding = [...transaction]
+    asceding.sort((a,b) => b.id - a.id)
+  }
+
   return (
     <div className="card-wrapper ms-5">
       <h3 className="fw-bold" style={{ color: "#613D2B", marginBottom: 26 }}>
         My Transaction
       </h3>
-      {transaction
+      {asceding
         ?.filter((transaction) => transaction.user.id === state.user.id)
         ?.map((item, index) => {
           return (
