@@ -32,11 +32,11 @@ function App() {
         </Route>
 
         {/* Route Admin */}
-        <Route path="/" element={<AdminRoute />}>
+        {/* <Route path="/" element={<AdminRoute />}> */}
           <Route path="/add-product" element={<AddCard />} />
           <Route path="/update-product/:id" element={<UpdateCard />} />
           <Route path="/list-product" element={<ListProductAdmin />} />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </div>
   );
