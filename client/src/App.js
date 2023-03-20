@@ -10,7 +10,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ListProductAdmin from "./pages/ListProductAdmin";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import Header from "./component/Header";
-import { UserRoute, AdminRoute } from "./component/PrivateRoutes";
+// import { UserRoute, AdminRoute } from "./component/PrivateRoutes";
 import { UserContext } from "./context/userContext";
 import React, { useContext } from "react";
 
@@ -25,17 +25,17 @@ function App() {
         <Route path="/detail-product/:id" element={<DetailProduct />} />
 
         {/* Route User */}
-        <Route path="/" element={<UserRoute />}>
-          <Route path="/my-cart" element={<MyCart />} />
-          <Route path="/my-transaction" element={<MyTransaction />} />
-          <Route path="/update-profile" element={<UpdateProfilePage />} />
-        </Route>
+        {/* <Route path="/" element={<UserRoute />}> */}
+        <Route path="/my-cart" element={<MyCart />} />
+        <Route path="/my-transaction" element={<MyTransaction />} />
+        <Route path="/update-profile" element={<UpdateProfilePage />} />
+        {/* </Route> */}
 
         {/* Route Admin */}
         {/* <Route path="/" element={<AdminRoute />}> */}
-          <Route path="/add-product" element={<AddCard />} />
-          <Route path="/update-product/:id" element={<UpdateCard />} />
-          <Route path="/list-product" element={<ListProductAdmin />} />
+        <Route path="/add-product" element={<AddCard />} />
+        <Route path="/update-product/:id" element={<UpdateCard />} />
+        <Route path="/list-product" element={<ListProductAdmin />} />
         {/* </Route> */}
       </Routes>
     </div>
